@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}  
+
+{% block content %}
+<div class="flex items-center justify-center">
+  <!-- Formulario de Registro -->
+  <form method="POST" class="mx-auto w-full max-w-md space-y-4 rounded-lg border border-gray-300 bg-gray-100 p-6">
+    {% csrf_token %}
+
+    <h2 class="text-2xl font-bold text-gray-900 text-center">Crear Cuenta</h2>
+
+    <!-- Campo: Username -->
+    <div>
+      <label class="block text-sm font-medium text-gray-900" for="id_username">
+        Nombre de Usuario
+      </label>
+      {% render_field form.username class="mt-1 w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:outline-none p-2" placeholder="Tu nombre de usuario" %}
+      
+      {% if form.username.errors %}
+        <p class="mt-1 text-sm text-red-600">{{ form.username.errors.0 }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Campo: Password -->
+    <div>
+      <label class="block text-sm font-medium text-gray-900" for="id_password1">
+        Contraseña
+      </label>
+      {% render_field form.password1 class="mt-1 w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:outline-none p-2" placeholder="Tu contraseña" %}
+      
+      {% if form.password1.errors %}
+        <p class="mt-1 text-sm text-red-600">{{ form.password1.errors.0 }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Campo: Confirmar Password -->
+    <div>
+      <label class="block text-sm font-medium text-gray-900" for="id_password2">
+        Confirmar Contraseña
+      </label>
+      {% render_field form.password2 class="mt-1 w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:outline-none p-2" placeholder="Confirma tu contraseña" %}
+      
+      {% if form.password2.errors %}
+        <p class="mt-1 text-sm text-red-600">{{ form.password2.errors.0 }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Botón Submit -->
+    <button 
+      class="block w-full rounded-lg border border-yellow-600 bg-yellow-600 px-12 py-3 text-sm font-medium text-white transition-colors hover:bg-transparent hover:text-indigo-600" 
+      type="submit">
+      Registrarse
+    </button>
+
+    <!-- Link para ir al login -->
+    <p class="text-center text-sm text-gray-600">
+      ¿Ya tienes cuenta? 
+      <a href="{% url 'login' %}" class="text-indigo-600 hover:underline">Inicia sesión aquí</a>
+    </p>
+  </form>
+</div>
+{% endblock %}
