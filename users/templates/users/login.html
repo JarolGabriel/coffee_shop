@@ -15,4 +15,14 @@
     type="submit">Login</button>
 
 </form>
+
+<div>
+    <!-- Al final de tu formulario de login -->
+<p class="text-center text-sm text-gray-500 mt-8">
+    ¿No tienes cuenta? 
+    <a href="{% url 'register' %}" class="text-yellow-600 hover:text-yellow-500 font-medium">
+        Regístrate aquí
+    </a>
+</p>
+</div>
 {% endblock  %}

@@ -33,7 +33,9 @@
               <a class="text-gray-500 transition hover:text-gray-500/75" href="#"> About </a>
             </li>
             <li>
-              <a class="text-gray-500 transition hover:text-gray-500/75" href="#"> History </a>
+              <a class="text-gray-500 transition hover:text-gray-500/75" href="{% url 'product_list' %}"> 
+                Productos 
+              </a>
             </li>
 
             <li>
@@ -43,6 +45,14 @@
             <li>
               <a class="text-gray-500 transition hover:text-gray-500/75" href="#"> Blog </a>
             </li>
+
+            {% if user.is_authenticated %}
+            <li>
+              <a class="text-gray-500 transition hover:text-yellow-600" href="{% url 'my_order' %}"> 
+                Mis Órdenes 
+              </a>
+            </li>
+            {% endif %}
           </ul>
         </nav>
 
