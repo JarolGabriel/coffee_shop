@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="max-w-4xl mx-auto p-6">
+  <!-- Encabezado del pedido -->
+  <div class="mb-6">
+    <h1 class="text-2xl font-bold text-gray-900 mb-2">Mi Pedido</h1>
+    <div class="text-gray-600">
+      <p><span class="font-medium">Cliente:</span> {{ order.user.username }}</p>
+      <p><span class="font-medium">Fecha:</span> {{ order.order_date|date:"d/m/Y - H:i" }}</p>
+      <p><span class="font-medium">Orden #:</span> {{ order.id }}</p>
+    </div>
+  </div>
+
+  <!-- Título de detalles -->
+  <h2 class="text-xl font-semibold text-gray-900 mb-4">Detalles del Pedido</h2>
+
+  <!-- Tabla de productos -->
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y-2 divide-gray-200">
+      <thead class="ltr:text-left rtl:text-right">
+        <tr class="*:font-medium *:text-gray-900">
+          <th class="px-3 py-2 whitespace-nowrap">Producto</th>
+          <th class="px-3 py-2 whitespace-nowrap">Precio</th>
+          <th class="px-3 py-2 whitespace-nowrap">Cantidad</th>
+          <th class="px-3 py-2 whitespace-nowrap">Total</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        {% for product_order in order.orderproduct_set.all %}
+<tr class="*:text-gray-700 hover:bg-yellow-50 transition-colors">
+  <td class="px-3 py-2 whitespace-nowrap font-medium">{{ product_order.product.name }}</td>
+  <td class="px-3 py-2 whitespace-nowrap">${{ product_order.product.price }}</td>
+  
+  <!-- Columna de Cantidad con botones +/- -->
+  <td class="px-3 py-2 whitespace-nowrap">
+    <div class="flex items-center gap-2">
+      <!-- Botón Disminuir -->
+      <form method="POST" action="{% url 'update_order_product' product_order.id %}" class="inline">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="decrease">
+        <button type="submit" 
+                class="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 transition flex items-center justify-center"
+                {% if product_order.quantity <= 1 %}disabled class="opacity-50 cursor-not-allowed"{% endif %}>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+          </svg>
+        </button>
+      </form>
+
+      <!-- Mostrar cantidad -->
+      <span class="w-8 text-center font-semibold">{{ product_order.quantity }}</span>
+
+      <!-- Botón Aumentar -->
+      <form method="POST" action="{% url 'update_order_product' product_order.id %}" class="inline">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="increase">
+        <button type="submit" 
+                class="w-8 h-8 rounded-full bg-yellow-400 hover:bg-yellow-500 transition flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+        </button>
+      </form>
+
+      <!-- Botón Eliminar -->
+      <form method="POST" action="{% url 'delete_order_product' product_order.id %}" class="inline ml-2">
+        {% csrf_token %}
+        <button type="submit" 
+                class="w-8 h-8 rounded-full bg-red-500 hover:bg-red-600 text-white transition flex items-center justify-center"
+                onclick="return confirm('¿Eliminar este producto?')">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </form>
+    </div>
+  </td>
+
+  <td class="px-3 py-2 whitespace-nowrap font-semibold">${{ product_order.get_total }}</td>
+</tr>
+{% empty %}
+<tr>
+  <td colspan="4" class="px-3 py-4 text-center text-gray-500">
+    No hay items en tu orden
+  </td>
+</tr>
+{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock content %}
