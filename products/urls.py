@@ -17,9 +17,11 @@ Including another URLconf
 
 from django.urls import path
 
-from .views import ProductFormView, product_list
+from .views import ProductCreateAPI, ProductFormView, ProductListAPI, product_list
 
 urlpatterns = [
     path("agregar/", ProductFormView.as_view(), name="add_product"),
     path("listado_productos/", product_list, name="product_list"),
+    path("api/", ProductListAPI.as_view(), name="product_list_api"),
+    path("api/products/create/", ProductCreateAPI.as_view(), name="product_create_api"),
 ]

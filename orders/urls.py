@@ -4,6 +4,7 @@ from .views import (
     CreateOrderProductView,
     DeleteOrderProductView,
     MyOrderView,
+    OrderCreateAPI,
     UpdateOrderProductView,
 )
 
@@ -20,4 +21,5 @@ urlpatterns = [
         DeleteOrderProductView.as_view(),
         name="delete_order_product",
     ),
+    path("api/orders/create/", OrderCreateAPI.as_view(), name="order_create_api"),
 ]

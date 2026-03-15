@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "products",
     "users",
     "orders",
+    "rest_framework",
     "widget_tweaks",
 ]
 
@@ -140,3 +141,11 @@ CRISPY_TEMPLATE_PACK = "tailwind"
 
 LOGIN_REDIRECT_URL = "product_list"
 LOGOUT_REDIRECT_URL = "/usuarios/login/"
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
+    ]
+}
