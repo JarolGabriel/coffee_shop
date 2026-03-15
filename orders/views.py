@@ -6,6 +6,12 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, DetailView
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from orders.serializers import OrderSerializer
 
 from .form import OrderProductForm
 from .models import Order, OrderProduct
@@ -72,3 +78,17 @@ class DeleteOrderProductView(LoginRequiredMixin, View):
         product_order.delete()
 
         return redirect("my_order")
+
+
+class OrderCreateAPI(APIView):
+    permission_classes = [IsAuthenticated]  # Solo usuarios autenticados
+
+    def post(self, request):
+        # Pasar el request al serializer (para que tenga acceso a request.user)
+        serializer = OrderSerializer(data=request.data, context={"request": request})
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_4000_BAD_REQUEST)
