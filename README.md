@@ -239,4 +239,4 @@ This project is part of a Django course and is for educational purposes.
 - Django documentation
 - Django REST Framework
 - Tailwind CSS
-- Railway for hosting solutions
+- Railway for hosting solutions# Force redeploy
