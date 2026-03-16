@@ -1,6 +1,4 @@
-from django.shortcuts import render
-
-# Create your views here.
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -41,6 +39,12 @@ class CreateOrderProductView(LoginRequiredMixin, CreateView):
         form.instance.order = order
         form.instance.quantity = 1
         form.save()
+
+        product_name = form.instance.product.name
+        messages.success(
+            self.request, f'¡Producto "{product_name}" agregado al pedido!'
+        )
+
         return super().form_valid(form)
 
 

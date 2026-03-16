@@ -10,8 +10,46 @@
     
     <!-- Aquí van tus CSS comunes -->
     <link rel="stylesheet" href="...">
+
+        <style>
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fade-in 0.3s ease-out;
+        }
+    </style>
+
+        <script>
+        // Auto-ocultar mensajes después de 3 segundos
+        document.addEventListener('DOMContentLoaded', function() {
+            const messages = document.querySelectorAll('.animate-fade-in');
+            messages.forEach(function(message) {
+                setTimeout(function() {
+                    message.style.opacity = '0';
+                    message.style.transform = 'translateY(-10px)';
+                    setTimeout(function() {
+                        message.remove();
+                    }, 300);
+                }, 3000);
+            });
+        });
+    </script>
 </head>
 <body>
+  {% if messages %}
+    <div class="fixed top-4 right-4 z-50 space-y-2">
+        {% for message in messages %}
+        <div class="bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg flex items-center gap-3 animate-fade-in">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span>{{ message }}</span>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
     <!-- Navbar común a todas las páginas -->
     <nav>
         <header class="bg-white">
@@ -32,13 +70,6 @@
         <nav aria-label="Global" class="hidden md:block">
           <ul class="flex items-center gap-6 text-sm">
 
-            <li>
-              <a class="text-gray-500 transition hover:text-gray-500/75" href="#"> About </a>
-            </li>
-            <li>
-              <a class="text-gray-500 transition hover:text-gray-500/75" href="#"> History </a>
-            
-            <li>
               <a class="text-gray-500 transition hover:text-gray-500/75" href="{% url 'product_list' %}"> 
                 Productos 
               </a>
