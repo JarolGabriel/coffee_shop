@@ -30,10 +30,7 @@
       <div class="md:flex md:items-center md:gap-12">
         <nav aria-label="Global" class="hidden md:block">
           <ul class="flex items-center gap-6 text-sm">
-            <li>
-              <a class="text-gray-500 transition hover:text-gray-500/75" href="#"> About </a>
-            </li>
-            
+
             <li>
               <a class="text-gray-500 transition hover:text-gray-500/75" href="{% url 'product_list' %}"> 
                 Productos 
@@ -42,10 +39,6 @@
 
             <li>
               <a class="text-gray-500 transition hover:text-gray-500/75" href="#"> Services </a>
-            </li>
-
-            <li>
-              <a class="text-gray-500 transition hover:text-gray-500/75" href="#"> Blog </a>
             </li>
 
             {% if user.is_authenticated %}
