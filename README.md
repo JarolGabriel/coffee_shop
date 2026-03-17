@@ -2,6 +2,9 @@
 
 A Django-based e-commerce web application for a coffee shop, featuring product management, user authentication, and order processing capabilities.
 
+🌐 Demo in live
+Visit the app web: https://coffeeshop-production-87be.up.railway.app
+
 ## 🚀 Features
 
 - **User Authentication System**
