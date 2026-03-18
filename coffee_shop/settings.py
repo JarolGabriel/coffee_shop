@@ -44,6 +44,8 @@ CSRF_TRUSTED_ORIGINS = env.list(
     "CSRF_TRUSTED_ORIGINS", default=["http://localhost:8000", "http://127.0.0.1:8000"]
 )
 
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 # Configuración de cookies seguras para producción
 if not DEBUG:
     CSRF_COOKIE_SECURE = True
