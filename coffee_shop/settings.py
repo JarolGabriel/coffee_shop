@@ -39,6 +39,7 @@ SECRET_KEY = env(
 DEBUG = env.bool("DEBUG", default=False)
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
 CSRF_TRUSTED_ORIGINS = env.list(
     "CSRF_TRUSTED_ORIGINS", default=["http://localhost:8000", "http://127.0.0.1:8000"]
 )
@@ -47,8 +48,13 @@ CSRF_TRUSTED_ORIGINS = env.list(
 if not DEBUG:
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = False  # Railway maneja SSL
     CSRF_COOKIE_SAMESITE = "Lax"
-    SESSION_COOKIE_SAMESITE = "LAX"
+    SESSION_COOKIE_SAMESITE = "Lax"
+else:
+    # En desarrollo local (HTTP)
+    CSRF_COOKIE_SECURE = False
+    SESSION_COOKIE_SECURE = False
 
 
 # Application definition
