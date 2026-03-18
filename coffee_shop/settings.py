@@ -207,13 +207,11 @@ STORAGES = {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        # Cambiamos CompressedManifest... por el StaticFilesStorage normal de WhiteNoise
+        "BACKEND": "whitenoise.storage.StaticFilesStorage",
     },
 }
 
-# Elimina o comenta estas líneas antiguas si las tienes para evitar conflictos:
-# DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
-# STATICFILES_STORAGE = "..."
 
 # Mantén estas para que Cloudinary funcione internamente
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
