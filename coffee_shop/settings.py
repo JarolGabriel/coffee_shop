@@ -85,6 +85,12 @@ else:
 # --- ARCHIVOS ESTÁTICOS Y CLOUDINARY (REPARADO) ---
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",  # <--- Encuentra el CSS del Admin
+]
+
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Configuración de Cloudinary
@@ -103,6 +109,11 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.StaticFilesStorage",
     },
 }
+
+STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
+
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_MANIFEST_STRICT = False
 
 # --- OTROS ---
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
