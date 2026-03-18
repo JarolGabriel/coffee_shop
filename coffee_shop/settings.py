@@ -198,25 +198,30 @@ CLOUDINARY_STORAGE = {
     ),
 }
 
-# --- ARCHIVOS ESTÁTICOS Y MEDIA ---
+# --- CONFIGURACIÓN FINAL DE ESTÁTICOS ---
 
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# Importante para que collectstatic encuentre tus archivos locales
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
+# Forzamos a Django a buscar en las carpetas de las apps (Admin, Crispy, etc.)
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 
-# Configuración de WhiteNoise para evitar crashes por archivos faltantes
+# Carpeta local para tus propios CSS/JS
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+
+# Configuración de WhiteNoise
+# WHITENOISE_USE_FINDERS permite que WhiteNoise busque archivos si collectstatic falló
 WHITENOISE_USE_FINDERS = True
 WHITENOISE_MANIFEST_STRICT = False
 
-# ESTA ES LA LÍNEA MÁGICA QUE EVITA EL CRASH:
-# Aunque usamos STORAGES, cloudinary-storage busca esta variable.
+# Compatibilidad con la librería Cloudinary (Evita el AttributeError)
 STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
 
-# Configuración de almacenamiento (Django 5.2+)
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
@@ -224,15 +229,4 @@ STORAGES = {
     "staticfiles": {
         "BACKEND": "whitenoise.storage.StaticFilesStorage",
     },
-}
-
-# Configuración de Cloudinary (Variables de entorno)
-CLOUDINARY_STORAGE = {
-    "CLOUD_NAME": env(
-        "CLOUDINARY_CLOUD_NAME", default=os.getenv("CLOUDINARY_CLOUD_NAME")
-    ),
-    "API_KEY": env("CLOUDINARY_API_KEY", default=os.getenv("CLOUDINARY_API_KEY")),
-    "API_SECRET": env(
-        "CLOUDINARY_API_SECRET", default=os.getenv("CLOUDINARY_API_SECRET")
-    ),
 }
