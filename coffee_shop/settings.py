@@ -36,13 +36,36 @@ SECRET_KEY = env(
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool("DEBUG", default=True)
+# DEBUG = env.bool("DEBUG", default=True)
 
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
-CSRF_TRUSTED_ORIGINS = env.list(
-    "CSRF_TRUSTED_ORIGINS", default=["http://localhost:8000", "http://127.0.0.1:8000"]
-)
+# ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
+# ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
+# CSRF_TRUSTED_ORIGINS = env.list(
+#     "CSRF_TRUSTED_ORIGINS", default=["http://localhost:8000", "http://127.0.0.1:8000"]
+# )
+
+# --- FORZAR CONFIGURACIÓN DE PRODUCCIÓN ---
+DEBUG = True  # Manténlo en True para que por fin veamos la pantalla amarilla
+ALLOWED_HOSTS = ["*"]
+
+# Configuración de Base de Datos compatible con Railway
+import dj_database_url
+
+DATABASES = {
+    "default": dj_database_url.config(
+        default=env("DJANGO_DB_URL"),
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
+}
+
+# --- ESTÁTICOS (Versión simplificada para evitar el 500) ---
+STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+
+# Importante: Quita WhiteNoise del middleware un segundo si sigue el 500
+# Solo para ver si el error es de WhiteNoise o de Django
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
@@ -169,8 +192,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 import os
 
 # Configuración de archivos media (imágenes subidas por usuarios)
-MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+# MEDIA_URL = "/media/"
+# MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 CRISPY_TEMPLATE_PACK = "tailwind"
@@ -199,8 +222,6 @@ CLOUDINARY_STORAGE = {
 }
 
 # --- AJUSTE FINAL DE ESTÁTICOS ---
-STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Carpeta local (asegúrate de que en tu PC tenga un archivo dentro)
 STATICFILES_DIRS = [
@@ -223,4 +244,4 @@ STORAGES = {
 }
 
 # Línea de seguridad para librerías antiguas
-STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
+# STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
