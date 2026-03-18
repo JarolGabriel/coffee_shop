@@ -160,13 +160,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
-
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -205,17 +198,39 @@ CLOUDINARY_STORAGE = {
     ),
 }
 
-# Configuración para archivos MEDIA (Imágenes de productos)
+# --- ARCHIVOS ESTÁTICOS Y MEDIA ---
+
+STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# Esto busca archivos en la carpeta 'static' de la raíz de tu proyecto
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+# Configuración de WhiteNoise para evitar errores si la carpeta está vacía
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_MANIFEST_STRICT = False
+
+# Configuración de almacenamiento (Django 5.2+)
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        # Cambiamos CompressedManifest... por el StaticFilesStorage normal de WhiteNoise
         "BACKEND": "whitenoise.storage.StaticFilesStorage",
     },
 }
 
+# Configuración de Cloudinary
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": env(
+        "CLOUDINARY_CLOUD_NAME", default=os.getenv("CLOUDINARY_CLOUD_NAME")
+    ),
+    "API_KEY": env("CLOUDINARY_API_KEY", default=os.getenv("CLOUDINARY_API_KEY")),
+    "API_SECRET": env(
+        "CLOUDINARY_API_SECRET", default=os.getenv("CLOUDINARY_API_SECRET")
+    ),
+}
 
-# Mantén estas para que Cloudinary funcione internamente
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+# ELIMINA la línea STATICFILES_STORAGE que tenías al final, ya no es necesaria con STORAGES
