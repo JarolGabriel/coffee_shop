@@ -200,4 +200,20 @@ CLOUDINARY_STORAGE = {
         "CLOUDINARY_API_SECRET", default=os.getenv("CLOUDINARY_API_SECRET")
     ),
 }
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+
+# Configuración para archivos MEDIA (Imágenes de productos)
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
+# Elimina o comenta estas líneas antiguas si las tienes para evitar conflictos:
+# DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+# STATICFILES_STORAGE = "..."
+
+# Mantén estas para que Cloudinary funcione internamente
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
