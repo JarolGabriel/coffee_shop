@@ -198,30 +198,21 @@ CLOUDINARY_STORAGE = {
     ),
 }
 
-# --- CONFIGURACIÓN FINAL DE ESTÁTICOS ---
-
+# --- AJUSTE FINAL DE ESTÁTICOS ---
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# Forzamos a Django a buscar en las carpetas de las apps (Admin, Crispy, etc.)
-STATICFILES_FINDERS = [
-    "django.contrib.staticfiles.finders.FileSystemFinder",
-    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-]
-
-# Carpeta local para tus propios CSS/JS
+# Carpeta local (asegúrate de que en tu PC tenga un archivo dentro)
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    BASE_DIR / "static",
 ]
 
-# Configuración de WhiteNoise
-# WHITENOISE_USE_FINDERS permite que WhiteNoise busque archivos si collectstatic falló
+# Esto obliga a WhiteNoise a buscar archivos en las apps si la carpeta central falla
 WHITENOISE_USE_FINDERS = True
 WHITENOISE_MANIFEST_STRICT = False
+WHITENOISE_ALLOW_ALL_ORIGINS = True
 
-# Compatibilidad con la librería Cloudinary (Evita el AttributeError)
-STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
-
+# Compatibilidad con Django 5.2 y Cloudinary
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
@@ -230,3 +221,6 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.StaticFilesStorage",
     },
 }
+
+# Línea de seguridad para librerías antiguas
+STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
