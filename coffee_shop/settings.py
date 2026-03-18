@@ -203,14 +203,18 @@ CLOUDINARY_STORAGE = {
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# Esto busca archivos en la carpeta 'static' de la raíz de tu proyecto
+# Importante para que collectstatic encuentre tus archivos locales
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
-# Configuración de WhiteNoise para evitar errores si la carpeta está vacía
+# Configuración de WhiteNoise para evitar crashes por archivos faltantes
 WHITENOISE_USE_FINDERS = True
 WHITENOISE_MANIFEST_STRICT = False
+
+# ESTA ES LA LÍNEA MÁGICA QUE EVITA EL CRASH:
+# Aunque usamos STORAGES, cloudinary-storage busca esta variable.
+STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
 
 # Configuración de almacenamiento (Django 5.2+)
 STORAGES = {
@@ -222,7 +226,7 @@ STORAGES = {
     },
 }
 
-# Configuración de Cloudinary
+# Configuración de Cloudinary (Variables de entorno)
 CLOUDINARY_STORAGE = {
     "CLOUD_NAME": env(
         "CLOUDINARY_CLOUD_NAME", default=os.getenv("CLOUDINARY_CLOUD_NAME")
@@ -232,5 +236,3 @@ CLOUDINARY_STORAGE = {
         "CLOUDINARY_API_SECRET", default=os.getenv("CLOUDINARY_API_SECRET")
     ),
 }
-
-# ELIMINA la línea STATICFILES_STORAGE que tenías al final, ya no es necesaria con STORAGES
